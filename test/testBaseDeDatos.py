@@ -18,10 +18,10 @@ class TestBaseDeDatos(unittest.TestCase):
         self.db.creaTablas()
 
     def test_llenaTablas():
-        pass 
+        pass
 
     def test_comandos():
         pass
 
     def test_cerrar():
-        self.ass
+        pass

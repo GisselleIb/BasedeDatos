@@ -1,17 +1,11 @@
 import unittest
-from cancion import Cancion
+from src.cancion import Cancion
 
 class TestCancion(unittest.TestCase):
     cancion=""
         def setUp():
             artista=Artista()
-        """def __init__():
-            self.artista=""
-            self.titulo=""
-            self.fecha=""
-            self.genero=""
-            self.numTrack=""
-            """
+
         def test_setArtista():
             self.assertEqual(self.cancion.artista,"")
             self.cancion.setArtista("artist")
