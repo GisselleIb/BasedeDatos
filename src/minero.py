@@ -10,21 +10,20 @@ class Minero:
         self.bd=bd
 
     def minar(self,dir):
-        i=0
         audiofile=""
         path=Path(dir)
         for mp3 in path.iterdir():
             if(mp3.is_dir()):
                 self.minar(str(mp3))
-            try:
-                audiofile=eyed3.load(mp3)
-                self.listCancion.append(self.creaCancion(audiofile,path,i))
-            except IOError:
-                continue
-            i+=1
-        self.creaRegistros()
+            else:
+                try:
+                    audiofile=eyed3.load(mp3)
+                    print(audiofile)
+                    self.listCancion.append(self.creaCancion(audiofile,path))
+                except IOError:
+                    continue
 
-    def creaCancion(self,audiofile,path,i):
+    def creaCancion(self,audiofile,path):
         cancion=Cancion()
         cancion.setArtista(audiofile.tag.artist)
         cancion.setTitulo(audiofile.tag.title)
@@ -32,15 +31,12 @@ class Minero:
         cancion.setTrack(audiofile.tag.track_num)
         cancion.setFecha(audiofile.tag.getBestDate())
         cancion.setAlbum(audiofile.tag.album)
-        cancion.setIdAlbum(i)
         cancion.setPath(path)
         return cancion
 
     def creaRegistros(self):
-        ids=0
-        idp=0
-        list=[]
+        print("min")
         for cancion in self.listCancion:
-            self.bd.llenaTablas("songs",[ids,idp,cancion.id_album,cancion.path,cancion.titulo,cancion.track,cancion.fecha,cancion.genero])
-            self.bd.llenaTablas("albums",[cancion.id_album,cancion.path,cancion.album,cancion.fecha])
-            self.bd.llenaTablas("performers",[cancion.idp,2,cancion.artista])
+            self.bd.llenaTablas("albums",[cancion.path,cancion.album,cancion.fecha])
+            self.bd.llenaTablas("performers",[2,cancion.artista])
+            self.bd.llenaTablas("songs",[cancion.path,cancion.titulo,cancion.track,cancion.fecha,cancion.genero,cancion.artista,cancion.album])
