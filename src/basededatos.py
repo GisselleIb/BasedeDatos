@@ -13,15 +13,12 @@ class BaseDeDatos():
             self.con=sqlite3.connect("bdmusical.bd")
             self.cursor=self.con.cursor()
             self.exist=True
-            print("here")
         else:
             self.con=sqlite3.connect("bdmusical.bd")
             self.cursor=self.con.cursor()
             self.creaTablas()
-            print("Base de datos creada")
 
     def creaTablas(self):
-        print("creando")
         self.con.execute('''CREATE TABLE types (
             id_type       INTEGER PRIMARY KEY,
             description   TEXT
@@ -136,8 +133,6 @@ class BaseDeDatos():
             INNER JOIN albums ON albums.id_album=songs.id_album
             WHERE performers.name= ?
             ORDER BY performers.name ''', (consulta,))
-            for row in self.cursor:
-                print(row[0],row[1],row[2],row[3])
             return self.cursor
         if tipo == "cancion":
             self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name
@@ -146,32 +141,28 @@ class BaseDeDatos():
             INNER JOIN albums ON albums.id_album=songs.id_album
             WHERE songs.title= ?
             ORDER BY performers.name''', (consulta,))
-            for row in self.cursor:
-                print(row[0],row[1],row[2],row[3])
             return self.cursor
         if tipo== "album":
             self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name
             FROM performers
             INNER JOIN songs ON performers.id_performer=songs.id_performer
-            INNER JOIN albums ON albums.id_album=songs.id_album 
+            INNER JOIN albums ON albums.id_album=songs.id_album
             WHERE albums.name= ?
             ORDER BY performers.name ''', (consulta,))
-            for row in self.cursor:
-                print(row[0],row[1],row[2],row[3])
             return self.cursor
 
     def comandos(self,comando):
-        if "A:" in comando:
-            comando.replace("A:","")
+        if comando is None:
+            return self.consulta(comando, "todo")
+        elif "A:" in comando:
+            comando=comando.replace("A: ","")
             return self.consulta(comando,"artista")
         elif "AM:" in comando:
-            comando.replace("AM:","")
+            comando=comando.replace("AM: ","")
             return self.consulta(comando,"album")
         elif "S:" in comando:
-            comando.replace("S:","")
+            comando=comando.replace("S: ","")
             return self.consulta(comando,"cancion")
-        elif comando is None or comando == "":
-            return self.consulta(comando, "todo")
 
     def cerrar():
         self.con.close(self)
