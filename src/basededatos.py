@@ -5,13 +5,15 @@ from cancion import Cancion
 class BaseDeDatos():
 
     def __init__(self):
+        self.exist=False
         self.con=None
-
+        self.creaBD()
     def creaBD(self):
         if os.path.isfile("bdmusical.bd"):
             self.con=sqlite3.connect("bdmusical.bd")
             self.cursor=self.con.cursor()
-            print("Base de datos creada")
+            self.exist=True
+            print("here")
         else:
             self.con=sqlite3.connect("bdmusical.bd")
             self.cursor=self.con.cursor()
@@ -27,7 +29,6 @@ class BaseDeDatos():
         self.con.execute('''INSERT INTO types VALUES(0,'Person')''')
         self.con.execute('''INSERT INTO types VALUES(1,'Group')''')
         self.con.execute('''INSERT INTO types VALUES(2,'Unknown')''')
-        print("algo")
         self.con.execute('''CREATE TABLE performers (
             id_performer  INTEGER PRIMARY KEY,
             id_type       INTEGER,
@@ -82,40 +83,40 @@ class BaseDeDatos():
     def llenaTablas(self,tabla,lista):
         p=""
         if tabla == "songs":
-            self.cursor.execute('''SELECT id_performer \
-                                FROM performers \
-                                WHERE name= ? ''', (lista[5],))
+            self.cursor.execute('''SELECT id_performer
+                                    FROM performers
+                                    WHERE name= ? ''', (lista[5],))
             r=self.cursor.fetchone()
             p=r[0]
-            self.cursor=self.con.execute('''SELECT id_album \
-                                FROM albums
-                                WHERE name=?''',(lista[6],))
+            self.cursor=self.con.execute('''SELECT id_album
+                                            FROM albums
+                                            WHERE name=?''',(lista[6],))
             r=self.cursor.fetchone()
             a=r[0]
             self.con.execute('''INSERT INTO songs (id_performer,id_album,path,title,track,year,genre)\
-               VALUES(?,?,?,?,?,?,?)''',\
-               (p,a,lista[0],lista[1],lista[2],lista[3],lista[4]))
+                                VALUES(?,?,?,?,?,?,?)''',\
+            (p,a,lista[0],lista[1],lista[2],lista[3],lista[4]))
             self.con.commit()
 
         if tabla == "albums":
-            self.cursor.execute('''SELECT id_album \
-                                FROM albums
-                                WHERE name=?''',(lista[1],))
+            self.cursor.execute('''SELECT id_album
+                                    FROM albums
+                                    WHERE name=?''',(lista[1],))
             if self.cursor.fetchone() == None:
-                print("there")
-                self.con.execute('''INSERT INTO albums (path,name,year)\
-                    VALUES(?,?,?)''', (lista[0],lista[1],lista[2]))
+                self.con.execute('''INSERT INTO albums (path,name,year)
+                                    VALUES(?,?,?)''', \
+             (lista[0],lista[1],lista[2]))
                 self.con.commit()
             else:
                 return
 
         if tabla == "performers":
-            self.cursor.execute('''SELECT id_performer \
-                                FROM performers \
-                                WHERE name= ? ''', (lista[1],))
+            self.cursor.execute('''SELECT id_performer
+                                    FROM performers
+                                    WHERE name= ? ''', (lista[1],))
             if self.cursor.fetchone() == None:
                 self.con.execute('''INSERT INTO performers(id_type,name) \
-                VALUES(?,?)''',(lista[0],lista[1]))
+                                    VALUES(?,?)''',(lista[0],lista[1]))
                 self.con.commit()
             else:
                 return
@@ -126,7 +127,10 @@ class BaseDeDatos():
             FROM performers
             INNER JOIN songs ON performers.id_performer=songs.id_performer
             INNER JOIN albums ON albums.id_album=songs.id_album \
-            ''',(consulta,))
+            ''')
+            for row in self.cursor:
+                print(row[0],row[1],row[2],row[3])
+                return self.cursor
         if tipo == "artista":
             self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name \
             FROM performers \
@@ -135,6 +139,7 @@ class BaseDeDatos():
             WHERE performers.name= ? ''', (consulta,))
             for row in self.cursor:
                 print(row[0],row[1],row[2],row[3])
+            return self.cursor
         if tipo == "cancion":
             self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name \
             FROM performers \
@@ -143,6 +148,7 @@ class BaseDeDatos():
             WHERE songs.title= ? ''', (consulta,))
             for row in self.cursor:
                 print(row[0],row[1],row[2],row[3])
+            return self.cursor
         if tipo== "album":
             self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name \
             FROM performers \
@@ -151,6 +157,7 @@ class BaseDeDatos():
             WHERE albums.name= ? ''', (consulta,))
             for row in self.cursor:
                 print(row[0],row[1],row[2],row[3])
+            return self.cursor
 
     def comandos(self,comando):
         if "A:" in comando:

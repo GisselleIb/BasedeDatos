@@ -4,10 +4,10 @@ from pathlib import Path
 import eyed3
 class Minero:
 
-    def __init__(self,bd):
+    def __init__(self):
         self.path=str(Path.home())+'/Music'
         self.listCancion=[]
-        self.bd=bd
+        self.bd=BaseDeDatos()
 
     def minar(self,dir):
         audiofile=""
@@ -18,7 +18,6 @@ class Minero:
             else:
                 try:
                     audiofile=eyed3.load(mp3)
-                    print(audiofile)
                     self.listCancion.append(self.creaCancion(audiofile,path))
                 except IOError:
                     continue
