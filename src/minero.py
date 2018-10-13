@@ -34,7 +34,6 @@ class Minero:
         return cancion
 
     def creaRegistros(self):
-        print("min")
         for cancion in self.listCancion:
             self.bd.llenaTablas("albums",[cancion.path,cancion.album,cancion.fecha])
             self.bd.llenaTablas("performers",[2,cancion.artista])

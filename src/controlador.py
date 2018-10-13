@@ -12,14 +12,15 @@ class Controlador():
         self.gui.fillTree(self.gui.model)
         self.gui.show()
 
-    def search(self,comando):
-        return self.bd.comandos(comando)
+    def searchBD(self,comando):
+        self.actualizaGUI(self.bd.comandos(comando))
 
     def actualizaBD(self,evento):
         pass
     def actualizaGUI(self,cursor):
-        for song in cursor:
-            self.gui.addSongs(self.gui.model,song[0],song[1],song[2],song[3])
+        if cursor is not None:
+            for song in cursor:
+                self.gui.addSongs(self.gui.model,song[0],song[1],song[2],song[3])
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
