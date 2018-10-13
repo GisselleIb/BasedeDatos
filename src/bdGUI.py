@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+from basededatos import BaseDeDatos
+from minero import Minero
 import sys
 from qtdesign import Ui_MainWindow
 from PyQt5.QtGui import QIcon
@@ -10,40 +11,38 @@ from PyQt5.QtCore import (QDate, QDateTime, QRegExp, QSortFilterProxyModel, Qt,
 from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
         QGroupBox, QHBoxLayout, QLabel, QLineEdit, QTreeView, QVBoxLayout,
-        QWidget)
+        QWidget, QMainWindow)
 
 
-class App(QWidget):
+class BdGUI(QMainWindow):
 
     ARTIST, TITLE, GENRE, ALBUM = range(4)
 
-    def __init__(self,bd):
-        super().__init__()
-        self.bd=bd
+    def __init__(self):
+        super(BdGUI,self).__init__()
+        self.minero=Minero()
+        self.bd=BaseDeDatos()
         self.ui=Ui_MainWindow()
-        self.setupUi(QtWidgets.QMainWindow())
+        self.ui.setupUi(self)
+        self.initUI()
 
     def initUI(self):
-        self.dataGroupBox = QGroupBox("Songs")
         self.ui.treeView.setRootIsDecorated(True)
         self.ui.treeView.setAlternatingRowColors(True)
 
-        dataLayout = QHBoxLayout()
-        dataLayout.addWidget(self.ui.treeView)
-        self.dataGroupBox.setLayout(dataLayout)
-
         model = self.createBDModel(self)
         self.ui.treeView.setModel(model)
-        self.addSongs(model)
-
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.dataGroupBox)
-        self.setLayout(mainLayout)
+        print(self.minero.bd.exist)
+        if self.minero.bd.exist == False :
+            self.minero.minar(self.minero.path)
+            self.minero.creaRegistros()
+        consulta=self.bd.consulta(None,"todo")
+        if consulta is not None:
+            print("not None")
+            for row in consulta:
+                self.addSongs(model,row[0],row[1], row[2],row[3])
 
         self.show()
-
-    def addSongs(self,model):
-        pass
 
     def createBDModel(self,parent):
         model = QStandardItemModel(0, 4, parent)
@@ -53,7 +52,7 @@ class App(QWidget):
         model.setHeaderData(self.ALBUM, Qt.Horizontal, "Album")
         return model
 
-    def addMail(self,model, artist, title, genre, album):
+    def addSongs(self,model, artist, title, genre, album):
         model.insertRow(0)
         model.setData(model.index(0, self.ARTIST), artist)
         model.setData(model.index(0, self.TITLE), title)
@@ -62,5 +61,5 @@ class App(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    ex = BdGUI()
     sys.exit(app.exec_())
