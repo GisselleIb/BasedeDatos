@@ -126,35 +126,36 @@ class BaseDeDatos():
             self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name
             FROM performers
             INNER JOIN songs ON performers.id_performer=songs.id_performer
-            INNER JOIN albums ON albums.id_album=songs.id_album \
-            ''')
-            for row in self.cursor:
-                print(row[0],row[1],row[2],row[3])
-                return self.cursor
+            INNER JOIN albums ON albums.id_album=songs.id_album
+            ORDER BY performers.name''')
+            return self.cursor
         if tipo == "artista":
-            self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name \
-            FROM performers \
-            INNER JOIN songs ON performers.id_performer=songs.id_performer \
-            INNER JOIN albums ON albums.id_album=songs.id_album \
-            WHERE performers.name= ? ''', (consulta,))
+            self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name
+            FROM performers
+            INNER JOIN songs ON performers.id_performer=songs.id_performer
+            INNER JOIN albums ON albums.id_album=songs.id_album
+            WHERE performers.name= ?
+            ORDER BY performers.name ''', (consulta,))
             for row in self.cursor:
                 print(row[0],row[1],row[2],row[3])
             return self.cursor
         if tipo == "cancion":
-            self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name \
-            FROM performers \
-            INNER JOIN songs ON performers.id_performer=songs.id_performer \
-            INNER JOIN albums ON albums.id_album=songs.id_album \
-            WHERE songs.title= ? ''', (consulta,))
+            self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name
+            FROM performers
+            INNER JOIN songs ON performers.id_performer=songs.id_performer
+            INNER JOIN albums ON albums.id_album=songs.id_album
+            WHERE songs.title= ?
+            ORDER BY performers.name''', (consulta,))
             for row in self.cursor:
                 print(row[0],row[1],row[2],row[3])
             return self.cursor
         if tipo== "album":
-            self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name \
-            FROM performers \
-            INNER JOIN songs ON performers.id_performer=songs.id_performer \
-            INNER JOIN albums ON albums.id_album=songs.id_album \
-            WHERE albums.name= ? ''', (consulta,))
+            self.cursor.execute('''SELECT performers.name,songs.title,songs.genre,albums.name
+            FROM performers
+            INNER JOIN songs ON performers.id_performer=songs.id_performer
+            INNER JOIN albums ON albums.id_album=songs.id_album 
+            WHERE albums.name= ?
+            ORDER BY performers.name ''', (consulta,))
             for row in self.cursor:
                 print(row[0],row[1],row[2],row[3])
             return self.cursor
@@ -162,13 +163,15 @@ class BaseDeDatos():
     def comandos(self,comando):
         if "A:" in comando:
             comando.replace("A:","")
-            self.consulta(comando)
-        if "AM:" in comando:
+            return self.consulta(comando,"artista")
+        elif "AM:" in comando:
             comando.replace("AM:","")
-            self.consulta(comando)
-        if "S:" in comando:
+            return self.consulta(comando,"album")
+        elif "S:" in comando:
             comando.replace("S:","")
-            self.consulta(comando)
+            return self.consulta(comando,"cancion")
+        elif comando is None or comando == "":
+            return self.consulta(comando, "todo")
 
     def cerrar():
         self.con.close(self)

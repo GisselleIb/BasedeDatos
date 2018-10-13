@@ -18,10 +18,10 @@ class BdGUI(QMainWindow):
 
     ARTIST, TITLE, GENRE, ALBUM = range(4)
 
-    def __init__(self):
+    def __init__(self,control):
         super(BdGUI,self).__init__()
+        self.control=control
         self.minero=Minero()
-        self.bd=BaseDeDatos()
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
@@ -30,19 +30,18 @@ class BdGUI(QMainWindow):
         self.ui.treeView.setRootIsDecorated(True)
         self.ui.treeView.setAlternatingRowColors(True)
 
-        model = self.createBDModel(self)
-        self.ui.treeView.setModel(model)
-        print(self.minero.bd.exist)
+        self.model = self.createBDModel(self)
+        self.ui.treeView.setModel(self.model)
+
+
+    def fillTree(self, model):
         if self.minero.bd.exist == False :
             self.minero.minar(self.minero.path)
             self.minero.creaRegistros()
-        consulta=self.bd.consulta(None,"todo")
+        consulta=self.control.search("")
         if consulta is not None:
-            print("not None")
             for row in consulta:
                 self.addSongs(model,row[0],row[1], row[2],row[3])
-
-        self.show()
 
     def createBDModel(self,parent):
         model = QStandardItemModel(0, 4, parent)
@@ -51,6 +50,11 @@ class BdGUI(QMainWindow):
         model.setHeaderData(self.GENRE, Qt.Horizontal, "Genre")
         model.setHeaderData(self.ALBUM, Qt.Horizontal, "Album")
         return model
+
+    def searchButton(self):
+        s=self.ui.lineEdit.text()
+        self.ui.lineEdit.clear()
+        self.control.searchBD(s)
 
     def addSongs(self,model, artist, title, genre, album):
         model.insertRow(0)
