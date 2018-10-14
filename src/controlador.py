@@ -7,8 +7,8 @@ from bdGUI import BdGUI
 class Controlador():
 
     def __init__(self):
-        self.bd=BaseDeDatos()
         self.gui=BdGUI(self)
+        self.bd=BaseDeDatos()
         self.gui.fillTree(self.gui.model)
         self.gui.show()
 
