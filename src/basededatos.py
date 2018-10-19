@@ -229,5 +229,6 @@ class BaseDeDatos():
             return self.consulta(comando,"cancion")
 
     def cerrar():
-
+        """Cierra la conexión con la base de datos
+        """
         self.con.close(self)
