@@ -9,6 +9,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
+    """Clase que construye la ventana principal de la interfaz gráfica.
+    """
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -73,13 +75,3 @@ class Ui_MainWindow(object):
         self.searchB.setText(_translate("MainWindow", "Search"))
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
         self.actionAddPersontoGroup.setText(_translate("MainWindow", "Add Person to Group"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

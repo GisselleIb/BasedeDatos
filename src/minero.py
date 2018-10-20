@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from basededatos import BaseDeDatos
 from cancion import Cancion
 from pathlib import Path

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from basededatos import BaseDeDatos
 from minero import Minero
 from PyQt5.QtWidgets import QApplication
