@@ -22,8 +22,8 @@ Escribir en la terminal python3 controlador.py
 
 ## Instrucciones específicas del programa: ##
 **Se necesita dar click al botón de "Add Songs" para agregar todas las canciones al iniciar el programa**
-Para buscar una canción por artista : A: artista
+Para buscar una canción por artista  A: artista
 
-Para buscar una canción por álbum : AM: álbum
+Para buscar una canción por álbum  AM: álbum
 
-Para buscar una canción por su título : S: canción
+Para buscar una canción por su título S: canción
