@@ -9,6 +9,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Performer(object):
+    """Clase que crea el diálogo para agregar personas
+    y grupos.
+    """
     def setupUi(self, Performer):
         Performer.setObjectName("Performer")
         Performer.resize(400, 300)
@@ -93,14 +96,3 @@ class Ui_Performer(object):
         self.label_6.setText(_translate("Performer", "Start date:"))
         self.label_7.setText(_translate("Performer", "End date:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Performer", "Group"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Performer = QtWidgets.QDialog()
-    ui = Ui_Performer()
-    ui.setupUi(Performer)
-    Performer.show()
-    sys.exit(app.exec_())
-

@@ -9,6 +9,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Dialog(object):
+    """Clase que crea el dialogo encargado de agregar
+    personas a grupos.
+    """
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(489, 379)
@@ -64,6 +67,14 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def setPerAndGroup(self,cons,type):
+        """Agrega a la listView las personas y grupos
+        guardados en la base de datos.
+        Parámetros
+        cons : cursor sqlite3
+            Iterable que guarda la consulta.
+        type : str
+            Tipo de los datos, puede ser persons o groups
+        """
         if cons is not None and type == "persons":
             for s in cons:
                 item=QtGui.QStandardItem(s[0])
