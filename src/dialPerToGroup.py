@@ -81,7 +81,6 @@ class Ui_Dialog(object):
                 self.model.appendRow(item)
         elif cons is not None and type == "groups":
             for s in cons:
-                print(s[0])
                 item=QtGui.QStandardItem(s[0])
                 self.model2.appendRow(item)
 

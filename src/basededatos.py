@@ -230,7 +230,7 @@ class BaseDeDatos():
             comando=comando.replace("S: ","")
             return self.consulta(comando,"cancion")
 
-    def cerrar():
+    def cerrar(self):
         """Cierra la conexión con la base de datos
         """
-        self.con.close(self)
+        self.con.close()

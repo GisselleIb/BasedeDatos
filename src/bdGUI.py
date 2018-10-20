@@ -118,7 +118,8 @@ class BdGUI(QMainWindow):
         """
         index1=self.dialog2.ui.listView.selectedIndexes()
         index2=self.dialog2.ui.listView_2.selectedIndexes()
-        self.control.actualizaBD("in_group",[str(index1[0].data()),str(index2[0].data())])
+        if index1 != [] and index2 != []:
+            self.control.actualizaBD("in_group",[str(index1[0].data()),str(index2[0].data())])
 
     def clearTree(self):
         """Limpia todos los datos del treeView
