@@ -11,6 +11,9 @@ Python
 **Biblioteca para la interfaz gráfica:** 
 PyQt5
 
+**Biblioteca para leer etiquetas Id3:**
+eyeD3
+
 ## Para clonarlo: ##
 git clone https://github.com/GisselleIb/BasedeDatos.git
 
